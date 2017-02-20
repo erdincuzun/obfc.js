@@ -53,6 +53,7 @@ Line(object1, object2, position1, position2, _text, _text_size, _description, _s
 * position1 and position2: are position information of objects. There are four positions for all shapes. Top=0, Bottom=1, Left=2 and Right=3. But, when these values are not entered or entered "-1", this function automatically determines these position by calculating differences between all unused positions. (Unused position means that this position is used for creating lines)
 * _text and _text: text in line. This function selects the longest sub-line for writing text. 
 * description, _stroke_color, _text_color: (same with previous section)
+
 # Licence
 Copyright (c) 2017 Erdinç Uzun
 
