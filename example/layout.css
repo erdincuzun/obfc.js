@@ -1,0 +1,16 @@
+.container {
+   height: auto;
+   overflow: hidden;
+}
+    
+.right {
+    width: 500px;
+    float: right;    
+}
+
+.left {
+    background: #e6f2ff;
+    float: none;
+    width: auto;
+    overflow: hidden;
+}
