@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="layout.css">
+    <script src="obfc.min.js"></script>
+    <title>obfc.js Example</title>
+</head>
+<body>
+    <div class="container">
+        <div class="right">
+            <div id="desc"></div>
+            <div id="test"></div>
+        </div>
+        <div class="left">
+            <svg id="demo" width="600" height="700">
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        prepare_SVG("demo");
+        var object1 = add_theObject(new Terminal(300, 50, 0.7, ["Start"], 20, "<h3>Search in an integer array</h3>"));
+        var object2 = add_theObject(new Process(300, 150, 1, ["s_value= 5, pos: -1", "List={1, 3, 5, 7, 9}"], 10, "<b>Description can be entered here...</b>"));
+        var object3 = add_theObject(new Preparation(300, 250, 1, ["i=0;i&lt;List.length-1;i++"], 8, "<i>Loop</i>"));
+        var object4 = add_theObject(new Decision(300, 380, 1, ["s_value==List[i]"], 10));
+        var object5 = add_theObject(new Process(150, 480, 0.8, ["pos=i"], 12, "<b>position value is changed</b>"));
+        var object6 = add_theObject(new Display(300, 560, 0.8, ["Show Position"], 10));
+        var object7 = add_theObject(new Terminal(300, 645, 0.7, ["End"], 20));
+
+        var o_line1 = draw_theLine(new Line(object1, object2));
+        var o_line2 = draw_theLine(new Line(object2, object3));
+        var o_line3 = draw_theLine(new Line(object3, object4));
+        var o_line4 = draw_theLine(new Line(object4, object3, null, null, "No", 12));
+        var o_line5 = draw_theLine(new Line(object4, object5, -1, -1, "Yes", 12));
+        //var o_line6 = draw_theLine(new Line(object5, object3, 0, 2, null, null, "Find last position"));
+        var o_line6 = draw_theLine(new Line(object5, object6, 1, 0, null, null, "Find and Break"));
+        var o_line7 = draw_theLine(new Line(object4, object6));
+        var o_line8 = draw_theLine(new Line(object6, object7));        
+    </script>
+
+</body>
+</html>
