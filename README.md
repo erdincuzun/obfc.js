@@ -1,12 +1,20 @@
 # obfc.js
 Object Based Flow Charts(obfc): Draws SVG-based flow charts by creating objects in your web pages.
 obfc.js is an object-based JavaScript Library for drawing SVG flow charts acroos modern web browsers. It makes easily to construct objects, links and connections. Moreover, it dispatches a click event when an object or a line is clicked and descriptions can be added for all clicks.
+# More documents about obfc.js
+* <a href="http://www.e-adys.com/category/obfcjs" target="blank">All Posts</a>
+* <a href="http://www.e-adys.com/post/obfc-js-example" target="_blank">An Example</a>
+* <a href="http://www.e-adys.com/post/properties-of-a-svg-shape" target="_blank">Properties of a SVG shape</a>
+* <a href="http://www.e-adys.com/post/obfc-js-all-svg-shapes" target="_blank">All SVG Shapes</a>
+* <a href="http://www.e-adys.com/post/obfc-js-creating-lines-free-draw-and-free-write-function" target="_blank">Creating Lines</a>
+* <a href="http://www.e-adys.com/post/obfc-js-collision-detection-editmode-and-console-log" target="_blank">Collision Detection, Editmode and Console.log</a>
+* <a href="http://www.e-adys.com/post/obfc-js-free-draw-and-free-write-functions"><em>free_draw</em> and <em>free_write</em> functions</a>
 # SVG Shapes
 obfc.js has 24 different SVG shapes that can be divided into four groups:  
-* Operation Symbols: Process, Predefined Process, Alternate Process, Delay, Preparation, ManualOperation
-* Branching and Control of Flow Symbols: Terminal, Decision, Connector (Inspection), Off-Page Connector, OR, Summing Junction
-* Input and Output Symbols: Data, Document, Multi - Document, Display, ManualInput, Card, PunchedTape
-* File and Information Storage Symbols: StoredData, MagneticDisk, Direct Access - Storage, Internal Storage, Sequential Access Storage - Magnetic Tape
+* Operation Symbols:Process, Predefined Process, Alternate Process, Delay, Preparation, Manual Operation
+* Branching and Control of Flow Symbols:Terminal, Decision, Connector (Inspection), Off-Page Connector, OR, Summing Junction
+* Input and Output Symbols: Data, Document, Multi - Document, Display, Manual Input, Card, Punched Tape
+* File and Information Storage Symbols: Stored Data, Magnetic Disk, Direct Access - Storage, Internal Storage, Sequential Access Storage - Magnetic Tape
 
 # Usage
 To use obfc.js the following:
