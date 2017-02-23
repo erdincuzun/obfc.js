@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="layout.css">
+    <script src="obfc.js"></script>
+    <title>obfc.js Example</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="right">
+            <div id="desc"></div>
+        </div>
+        <div class="left">
+            <svg id="demo" width="600" height="700">
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        open_ruler = true;
+
+        prepare_SVG("demo");
+        free_draw("l80 d220 l115", [200, 30]);
+        free_draw("r80 d180 r150 u20 l20", [10, 10]);
+        free_write("Hello obfc.js", 20, "bold", 100, 20, 300, "center", "red");
+        free_write(["Comment Line 1", "Comment Line 2", "Comment Line 3"], 20, "normal", 100, 100, 100);
+    </script>
+
+</body>
+</html>
