@@ -117,13 +117,13 @@ function PredefinedProcess(_middle_x, _middle_y, _size, _text, _text_size, _desc
     this.Name = "Predefined Process";
 
     this.Draw = function () {
-        temp = this.g_start;
+        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
         temp += "<rect x=\"" + this.start_x + "\" y=\"" + this.start_y + "\" width=\"" + this.width + "\" height=\"" + this.height + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.start_x + this.width / 10) + "\" y1=\"" + this.start_y + "\" x2=\"" + (this.start_x + this.width / 10) + "\" y2=\"" + (this.start_y + this.height) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.start_x + this.width - this.width / 10) + "\" y1=\"" + this.start_y + "\" x2=\"" + (this.start_x + this.width - this.width / 10) + "\" y2=\"" + (this.start_y + this.height) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
             temp += writeText(this.text, this.text_size, "normal", this.middle_x, this.middle_y, this.height, "center", _text_color);
-        temp += this.g_end;
+        temp += "</g>";
         return temp;
     }
 }
@@ -136,11 +136,11 @@ function AlternateProcess(_middle_x, _middle_y, _size, _text, _text_size, _descr
         var rx = 5 * this.size;
         var ry = 5 * this.size;
 
-        temp = this.g_start;
+        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
         temp += "<rect x=\"" + this.start_x + "\" y=\"" + this.start_y + "\" rx=\"" + rx + "\" ry=\"" + ry + "\" width=\"" + this.width + "\" height=\"" + this.height + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
             temp += writeText(this.text, this.text_size, "normal", this.middle_x, this.middle_y, this.height, "center", _text_color);
-        temp += this.g
+        temp += "</g>";
         return temp;
     }
 }
@@ -238,17 +238,7 @@ function ManualOperation(_middle_x, _middle_y, _size, _text, _text_size, _descri
 //Branching and Control of Flow Symbols START
 function Terminal(_middle_x, _middle_y, _size, _text, _text_size, _description, _fill_color, _stroke_color, _text_color) {
     Process.call(this, _middle_x, _middle_y, _size, _text, _text_size, _description, _fill_color, _stroke_color, _text_color);
-    this.Name = "Terminal";
-    this.probable_x_y = [[0, 0], [0, 0]];
-    this.width = 125 * _size;
-    this.height = 50 * _size;
-    this.start_x = _middle_x - this.width / 2;
-    this.start_y = _middle_y - this.height / 2;
-
-    this.probable_x_y[0][0] = this.middle_x;
-    this.probable_x_y[0][1] = this.middle_y - this.height / 2;
-    this.probable_x_y[1][0] = this.middle_x;
-    this.probable_x_y[1][1] = this.middle_y + this.height / 2;
+    this.Name = "Terminal";   
 
     this.Draw = function () {
         var rx = 25 * this.size;
@@ -816,21 +806,32 @@ function writeConsoleText(_text, _state) {
 }
 
 function writeText(_text, _text_size, _font_weight, _middle_x, _middle_y, _object_height, _align, _text_color) {
+    if (typeof _text === 'undefined' || _text == null)
+        _text = ["Empty Text"];
+    else if (typeof _text === 'string')
+        _text = [_text];
+    if (typeof _text_size === 'undefined' || _text_size == null)
+        _text_size = 12;
+    if (typeof _font_weight === 'undefined' || _font_weight == null)
+        _font_weight = "normal";
+    if (typeof _middle_x === 'undefined' || _middle_x == null)
+        _middle_x = 100;
+    if (typeof _middle_y === 'undefined' || _middle_y == null)
+        _middle_y = 5;
+    if (typeof _object_height === 'undefined' || _object_height == null)
+        _object_height = 300;
     if (typeof _align === 'undefined' || _align == "center" || _align == null)
         _align = "alignment-baseline=\"middle\" text-anchor=\"middle\"";
     else
         _align = "";
-
-    this.text_color = "black";
     if (typeof _text_color === 'undefined' || _text_color == null)
-        this.text_color = text_color;
-    else
-        this.text_color = _text_color;
+        _text_color = "black";
 
-    var _row_count = _text.length;
+    var _row_count = _text.length;   
     var _row_size = _object_height / _row_count;
     var _pos = _middle_y - (_object_height / 2) + (_row_size / 2) + 6;
-    var temp = "<text x=\"" + _middle_x + "\" y=\"" + _middle_y + "\" " + _align + " font-family=\"Verdana\" font-size=\"" + _text_size + "\" font-weight=\"" + _font_weight + "\" fill=\"" + this.text_color + "\">"
+
+    var temp = "<text x=\"" + _middle_x + "\" y=\"" + _middle_y + "\" " + _align + " font-family=\"Verdana\" font-size=\"" + _text_size + "\" font-weight=\"" + _font_weight + "\" fill=\"" + _text_color + "\">"
     for (var i = 0; i < _row_count; i++) {
         temp += "<tspan x=\"" + _middle_x + "\" y=\"" + _pos + "\">" + _text[i] + "</tspan>";
         _pos += _row_size;
@@ -1190,18 +1191,19 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
             }
         }
         else if (position1 == 2 && position2 == 0) {
-            if (selection1[1] - selection2[1] < -75) {
+            if (selection1[1] - selection2[1] < -75) {                
                 temp += selection1[0] + "," + selection1[1] + " " + (selection1[0] - c1) + "," + selection1[1]
                 + " " + (selection1[0] - c1) + "," + (selection2[1] - ok) + " " + selection2[0] + "," + (selection2[1] - ok)
                 + " " + selection2[0] + "," + selection2[1];
             }
-            else {
+            else {                
                 if (selection1[0] - selection2[0] < 0) {
-                    if (selection1[1] - selection2[1] < 0)
+                    if (selection1[1] - selection2[1] < 0){                        
                         temp += selection1[0] + "," + selection1[1] + " " + (selection1[0] - c1) + "," + selection1[1]
-                    + " " + (selection1[0] - c1) + "," + (selection1[1] - dik1) + " " + selection2[0] + "," + (selection1[1] - dik1)
+                    + " " + (selection1[0] - c1) + "," + (selection1[1] + dik1) + " " + selection2[0] + "," + (selection1[1] + dik1)
                     + " " + selection2[0] + "," + selection2[1];
-                    else {
+                    }                        
+                    else {                        
                         if (selection1[0] - selection2[0] < -62.5)
                             temp += selection1[0] + "," + selection1[1] + " " + (selection1[0] - c1) + "," + selection1[1]
                                 + " " + (selection1[0] - c1) + "," + (selection2[1] - ok) + " " + selection2[0] + "," + (selection2[1] - ok)
@@ -1270,18 +1272,20 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
                 }
             }
         }
-        else if (position1 == 3 && position2 == 0) {
-            if (selection1[1] - selection2[1] < -75) {
-                if (selection1[0] - selection2[0] > -20)
+        else if (position1 == 3 && position2 == 0) {            
+            if (selection1[1] - selection2[1] < -75) {                
+                if (selection1[0] - selection2[0] > -20) {                    
                     temp += selection1[0] + "," + selection1[1] + " " + (selection1[0] + c1) + "," + selection1[1]
-                    + " " + (selection1[0] + c1) + "," + (selection2[1] - ok) + " " + selection2[0] + "," + (selection2[1] - ok)
-                    + " " + selection2[0] + "," + selection2[1];
-                else
+                   + " " + (selection1[0] + c1) + "," + (selection2[1] - ok) + " " + selection2[0] + "," + (selection2[1] - ok)
+                   + " " + selection2[0] + "," + selection2[1];
+                }                   
+                else {                    
                     temp += selection1[0] + "," + selection1[1] + " " + selection2[0] + "," + selection1[1] +
-                                " " + selection2[0] + "," + selection2[1];
+                               " " + selection2[0] + "," + selection2[1];
+                }                   
             }
-            else {
-                if (selection1[0] - selection2[0] < 0) {
+            else {                
+                if (selection1[0] - selection2[0] < 0) {                    
                     if (selection1[1] - selection2[1] > -40) {
                         if (selection1[0] - selection2[0] > 0)
                             temp += selection1[0] + "," + selection1[1] + " " + (selection1[0] + c1) + "," + selection1[1]
@@ -1299,13 +1303,13 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
                         }
 
                     }
-                    else {
+                    else {                        
                         temp += selection1[0] + "," + selection1[1] + " " + selection2[0] + "," + selection1[1] +
                                 " " + selection2[0] + "," + selection2[1];
                     }
                 }
-                else {
-                    if (selection1[1] - selection2[1] > -75) {
+                else {                    
+                    if (selection1[1] - selection2[1] > -75) {                        
                         if (selection1[1] - selection2[1] < -15)
                             temp += selection1[0] + "," + selection1[1] + " " + (selection1[0] + c1) + "," + selection1[1]
                             + " " + (selection1[0] + c1) + "," + (selection1[1] - dik1) + " " + selection2[0] + "," + (selection1[1] - dik1)
@@ -1321,11 +1325,12 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
                                 + " " + selection2[0] + "," + selection2[1];
                         }
                     }
-                    else {
-                        if (selection1[0] - selection2[0] < 80)
-                            temp += selection1[0] + "," + selection1[1] + " " + (selection2[0] - cizgi1) + "," + selection1[1]
-                            + " " + (selection2[0] - cizgi1) + "," + (selection2[1] - ok) + " " + selection2[0] + "," + (selection2[1] - ok)
+                    else {                        
+                        if (selection1[0] - selection2[0] < 80) {                            
+                            temp += selection1[0] + "," + selection1[1] + " " + (selection1[0] + c1) + "," + selection1[1]
+                            + " " + (selection1[0] + c1) + "," + (selection2[1] - ok) + " " + selection2[0] + "," + (selection2[1] - ok)
                             + " " + selection2[0] + "," + selection2[1];
+                        }                            
                         else
                             temp += selection1[0] + "," + selection1[1] + " " + (selection1[0] + c1) + "," + selection1[1]
                             + " " + (selection1[0] + c1) + "," + (selection2[1] - ok) + " " + selection2[0] + "," + (selection2[1] - ok)
@@ -1511,8 +1516,9 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
             temp += selection1[0] + "," + selection1[1] + " " + selection2[0] + "," + selection2[1];
         }
 
-        temp = findObjectArrayLineCollication(temp); //all objects
+        temp = findObjectArrayLineCollication(temp); //all objects        
         var temp2 = findLineArrayCollication(temp); //all lines 
+        //document.getElementById("desc").innerHTML += "Burdayým <br />" + temp;
 
         this.LinesData = temp;
 
@@ -1696,8 +1702,9 @@ function free_draw(str, start_position, _stroke_color) {
     document.getElementById(id_theSVG).innerHTML += temp3;    
 }
 
-function prepare_SVG2(_id_theSVG) {
-    
+function free_write(_text, _text_size, _font_weight, _middle_x, _middle_y, _height, _align, _text_color) {
+    var temp = writeText(_text, _text_size, _font_weight, _middle_x, _middle_y, _height, _align, _text_color);
+    document.getElementById(id_theSVG).innerHTML += temp;
 }
 
 ////Collision
@@ -1745,207 +1752,207 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
     return null;
 }
 
-function findObjectCollication(object1, object2) {
-    var o1_lines = [[object1.start_x - 40, object1.start_y - 40, object1.start_x + object1.width + 40, object1.start_y - 40],
-                [object1.start_x - 40, object1.start_y - 40, object1.start_x - 40, object1.start_y + object1.height + 40],
-                [object1.start_x + object1.width + 40, object1.start_y - 40, object1.start_x + object1.width + 40, object1.start_y + object1.height + 40],
-                [object1.start_x - 40, object1.start_y + object1.height + 40, object1.start_x + object1.width + 40, object1.start_y + object1.height + 40]];
-    var o2_lines = [[object2.start_x, object2.start_y, object2.start_x + object2.width, object2.start_y],
-                [object2.start_x, object2.start_y, object2.start_x, object2.start_y + object2.height],
-                [object2.start_x + object2.width, object2.start_y, object2.start_x + object2.width, object2.start_y + object2.height],
-                [object2.start_x, object2.start_y + object2.height, object2.start_x + object2.width, object2.start_y + object2.height]];
+    function findObjectCollication(object1, object2) {
+        var o1_lines = [[object1.start_x - 40, object1.start_y - 40, object1.start_x + object1.width + 40, object1.start_y - 40],
+                    [object1.start_x - 40, object1.start_y - 40, object1.start_x - 40, object1.start_y + object1.height + 40],
+                    [object1.start_x + object1.width + 40, object1.start_y - 40, object1.start_x + object1.width + 40, object1.start_y + object1.height + 40],
+                    [object1.start_x - 40, object1.start_y + object1.height + 40, object1.start_x + object1.width + 40, object1.start_y + object1.height + 40]];
+        var o2_lines = [[object2.start_x, object2.start_y, object2.start_x + object2.width, object2.start_y],
+                    [object2.start_x, object2.start_y, object2.start_x, object2.start_y + object2.height],
+                    [object2.start_x + object2.width, object2.start_y, object2.start_x + object2.width, object2.start_y + object2.height],
+                    [object2.start_x, object2.start_y + object2.height, object2.start_x + object2.width, object2.start_y + object2.height]];
 
-    var result = false;
-    for (var i = 0; i < o1_lines.length; i++) {
-        for (var j = 0; j < o2_lines.length; j++) {
-            var result = findLineCollication(o1_lines[i][0], o1_lines[i][1], o1_lines[i][2], o1_lines[i][3], o2_lines[j][0], o2_lines[j][1], o2_lines[j][2], o2_lines[j][3]);
-            if (result != null) {
-                return true;
+        var result = false;
+        for (var i = 0; i < o1_lines.length; i++) {
+            for (var j = 0; j < o2_lines.length; j++) {
+                var result = findLineCollication(o1_lines[i][0], o1_lines[i][1], o1_lines[i][2], o1_lines[i][3], o2_lines[j][0], o2_lines[j][1], o2_lines[j][2], o2_lines[j][3]);
+                if (result != null) {
+                    return true;
+                }
             }
         }
+
+        return result;
     }
 
-    return result;
-}
+    function findObjectArrayLineCollication(LinesData) {
+        for (var i = 0; i < object_array.length; i++) {
+            var line_arrayx = LinesData.split(" ");
+            var objectx = object_array[i];
+            var ox_lines = [[objectx.start_x, objectx.start_y, objectx.start_x + objectx.width, objectx.start_y],
+                    [objectx.start_x, objectx.start_y + objectx.height, objectx.start_x + objectx.width, objectx.start_y + objectx.height],
+                    [objectx.start_x, objectx.start_y, objectx.start_x, objectx.start_y + objectx.height],
+                    [objectx.start_x + objectx.width, objectx.start_y, objectx.start_x + objectx.width, objectx.start_y + objectx.height]];
 
-function findObjectArrayLineCollication(LinesData) {
-    for (var i = 0; i < object_array.length; i++) {
-        var line_arrayx = LinesData.split(" ");
-        var objectx = object_array[i];
-        var ox_lines = [[objectx.start_x, objectx.start_y, objectx.start_x + objectx.width, objectx.start_y],
-                [objectx.start_x, objectx.start_y + objectx.height, objectx.start_x + objectx.width, objectx.start_y + objectx.height],
-                [objectx.start_x, objectx.start_y, objectx.start_x, objectx.start_y + objectx.height],
-                [objectx.start_x + objectx.width, objectx.start_y, objectx.start_x + objectx.width, objectx.start_y + objectx.height]];
+            var path = "";
+            var x1 = -1, y1 = -1, x2 = -1, y2 = -1;
+            var col_start = -1, col_end = -1;
+            var min_x = 0, min_y = 0;
 
-        var path = "";
-        var x1 = -1, y1 = -1, x2 = -1, y2 = -1;
-        var col_start = -1, col_end = -1;
-        var min_x = 0, min_y = 0;
+            for (var j = 0; j < line_arrayx.length - 1; j++) {
+                var linex_start = line_arrayx[j].split(",");
+                var linex_end = line_arrayx[j + 1].split(",");
+                for (var m = 0; m < ox_lines.length; m++) {
+                    var result = findLineCollication(ox_lines[m][0], ox_lines[m][1], ox_lines[m][2], ox_lines[m][3], linex_start[0], linex_start[1], linex_end[0], linex_end[1]);
 
-        for (var j = 0; j < line_arrayx.length - 1; j++) {
-            var linex_start = line_arrayx[j].split(",");
-            var linex_end = line_arrayx[j + 1].split(",");
-            for (var m = 0; m < ox_lines.length; m++) {
-                var result = findLineCollication(ox_lines[m][0], ox_lines[m][1], ox_lines[m][2], ox_lines[m][3], linex_start[0], linex_start[1], linex_end[0], linex_end[1]);
+                    if (result != null) {
+                        if (i == 0) path += "t";
+                        else if (i == 1) path += "b";
+                        else if (i == 2) path += "l";
+                        else if (i == 3) path += "r";
 
-                if (result != null) {
-                    if (i == 0) path += "t";
-                    else if (i == 1) path += "b";
-                    else if (i == 2) path += "l";
-                    else if (i == 3) path += "r";
+                        if (x1 == -1) { //first 
+                            x1 = parseFloat(result[0]);
+                            y1 = parseFloat(result[1]);
+                            col_start = j + 1;
+                            if (x1 - objectx.start_x < objectx.start_x + objectx.width - x1)
+                                min_x = x1 - (objectx.start_x - 15); //to left
+                            else
+                                min_x = -(objectx.start_x + objectx.width - x1 + 15) //to right
 
-                    if (x1 == -1) { //first 
-                        x1 = parseFloat(result[0]);
-                        y1 = parseFloat(result[1]);
-                        col_start = j + 1;
-                        if (x1 - objectx.start_x < objectx.start_x + objectx.width - x1)
-                            min_x = x1 - (objectx.start_x - 15); //to left
-                        else
-                            min_x = -(objectx.start_x + objectx.width - x1 + 15) //to right
+                            if (y1 - objectx.start_y < objectx.start_y + objectx.height - y1)
+                                min_y = y1 - (objectx.start_y - 15); //to top
+                            else
+                                min_y = -(objectx.start_y + objectx.height - y1 + 15) //to bottom
 
-                        if (y1 - objectx.start_y < objectx.start_y + objectx.height - y1)
-                            min_y = y1 - (objectx.start_y - 15); //to top
-                        else
-                            min_y = -(objectx.start_y + objectx.height - y1 + 15) //to bottom
-
-                    } else if (x2 == -1) { //second collision
-                        x2 = parseFloat(result[0]);
-                        y2 = parseFloat(result[1]);
-                        if (path == "lr" && (linex_start[0] > linex_end[0])) {
-                            path = "rl"; var _d = x1; x1 = x2; x2 = _d;
+                        } else if (x2 == -1) { //second collision
+                            x2 = parseFloat(result[0]);
+                            y2 = parseFloat(result[1]);
+                            if (path == "lr" && (linex_start[0] > linex_end[0])) {
+                                path = "rl"; var _d = x1; x1 = x2; x2 = _d;
+                            }
+                            else if (path == "tb" && (linex_start[1] < linex_end[1])) {
+                                path = "bt"; var _d = y1; y1 = y2; y2 = _d;
+                            }
+                            col_end = j + 1;
+                            break;
                         }
-                        else if (path == "tb" && (linex_start[1] < linex_end[1])) {
-                            path = "bt"; var _d = y1; y1 = y2; y2 = _d;
+                    }
+                } //all lines in objects                   
+            }//lines
+
+
+            var temp = "";
+            if (col_start != -1 && col_end != -1) {
+
+                //temp = line_arrayx[0] + " ";
+                for (var j = 0; j < line_arrayx.length; j++) {
+                    //var linex_start = line_arrayx[j].split(",");
+                    if (j < col_start || j > col_end) {
+                        temp += line_arrayx[j] + " ";
+                    }
+                    else {
+                        //document.getElementById("test").innerHTML += path + "<br>";
+                        if (j == col_end) { //for only one replay     
+                            path = path.substring(0, 2);//bug
+
+                            if (path == "rb")
+                                temp += (x1 + 15) + "," + y1 + " " + (x1 + 15) + "," + (y2 + 15) + " " + x2 + "," + (y2 + 15) + " " + line_arrayx[j] + " ";
+                            else if (path == "br")
+                                temp += x1 + "," + (y1 + 15) + " " + (x2 + 15) + "," + (y1 + 15) + " " + (x2 + 15) + "," + y2 + " " + line_arrayx[j] + " ";
+                            else if (path == "rt")
+                                temp += (x1 + 15) + "," + y1 + " " + (x1 + 15) + "," + (y2 - 15) + " " + x2 + "," + (y2 - 15) + " " + line_arrayx[j] + " ";
+                            else if (path == "tr")
+                                temp += x1 + "," + (y1 - 15) + " " + (x2 + 15) + "," + (y1 - 15) + " " + (x2 + 15) + "," + y2 + " " + line_arrayx[j] + " ";
+                            else if (path == "lb")
+                                temp += (x1 - 15) + "," + y1 + " " + (x1 - 15) + "," + (y2 + 15) + " " + x2 + "," + (y2 + 15) + " " + line_arrayx[j] + " ";
+                            else if (path == "bl")
+                                temp += x1 + "," + (y1 + 15) + " " + (x2 - 15) + "," + (y1 + 15) + " " + (x2 - 15) + "," + y2 + " " + line_arrayx[j] + " ";
+                            else if (path == "lt")
+                                temp += (x1 - 15) + "," + y1 + " " + (x1 - 15) + "," + (y2 - 15) + " " + x2 + "," + (y2 - 15) + " " + line_arrayx[j] + " ";
+                            else if (path == "tl")
+                                temp += x1 + "," + (y1 - 15) + " " + (x2 - 15) + "," + (y1 - 15) + " " + (x2 - 15) + "," + y2 + " " + line_arrayx[j] + " ";
+                            else if (path == "tb")
+                                temp += x1 + "," + (y1 - 15) + " " + (x2 - min_x) + "," + (y1 - 15) + " " + (x2 - min_x) + "," + (y2 + 15) + " " + x2 + "," + (y2 + 15) + " " + line_arrayx[j] + " ";
+                            else if (path == "bt")
+                                temp += x1 + "," + (y1 + 15) + " " + (x2 - min_x) + "," + (y1 + 15) + " " + (x2 - min_x) + "," + (y2 - 15) + " " + x2 + "," + (y2 - 15) + " " + line_arrayx[j] + " ";
+                            else if (path == "lr")
+                                temp += (x1 - 15) + "," + y1 + " " + (x1 - 15) + "," + (y1 - min_y) + " " + (x2 + 15) + "," + (y2 - min_y) + " " + (x2 + 15) + "," + y2 + " " + line_arrayx[j] + " ";
+                            else if (path == "rl")
+                                temp += (x1 + 15) + "," + y1 + " " + (x1 + 15) + "," + (y1 - min_y) + " " + (x2 - 15) + "," + (y2 - min_y) + " " + (x2 - 15) + "," + y2 + " " + line_arrayx[j] + " ";
                         }
-                        col_end = j + 1;
-                        break;
                     }
                 }
-            } //all lines in objects                   
-        }//lines
-
-
-        var temp = "";
-        if (col_start != -1 && col_end != -1) {
-
-            //temp = line_arrayx[0] + " ";
-            for (var j = 0; j < line_arrayx.length; j++) {
-                //var linex_start = line_arrayx[j].split(",");
-                if (j < col_start || j > col_end) {
-                    temp += line_arrayx[j] + " ";
-                }
-                else {
-                    //document.getElementById("test").innerHTML += path + "<br>";
-                    if (j == col_end) { //for only one replay     
-                        path = path.substring(0, 2);//bug
-
-                        if (path == "rb")
-                            temp += (x1 + 15) + "," + y1 + " " + (x1 + 15) + "," + (y2 + 15) + " " + x2 + "," + (y2 + 15) + " " + line_arrayx[j] + " ";
-                        else if (path == "br")
-                            temp += x1 + "," + (y1 + 15) + " " + (x2 + 15) + "," + (y1 + 15) + " " + (x2 + 15) + "," + y2 + " " + line_arrayx[j] + " ";
-                        else if (path == "rt")
-                            temp += (x1 + 15) + "," + y1 + " " + (x1 + 15) + "," + (y2 - 15) + " " + x2 + "," + (y2 - 15) + " " + line_arrayx[j] + " ";
-                        else if (path == "tr")
-                            temp += x1 + "," + (y1 - 15) + " " + (x2 + 15) + "," + (y1 - 15) + " " + (x2 + 15) + "," + y2 + " " + line_arrayx[j] + " ";
-                        else if (path == "lb")
-                            temp += (x1 - 15) + "," + y1 + " " + (x1 - 15) + "," + (y2 + 15) + " " + x2 + "," + (y2 + 15) + " " + line_arrayx[j] + " ";
-                        else if (path == "bl")
-                            temp += x1 + "," + (y1 + 15) + " " + (x2 - 15) + "," + (y1 + 15) + " " + (x2 - 15) + "," + y2 + " " + line_arrayx[j] + " ";
-                        else if (path == "lt")
-                            temp += (x1 - 15) + "," + y1 + " " + (x1 - 15) + "," + (y2 - 15) + " " + x2 + "," + (y2 - 15) + " " + line_arrayx[j] + " ";
-                        else if (path == "tl")
-                            temp += x1 + "," + (y1 - 15) + " " + (x2 - 15) + "," + (y1 - 15) + " " + (x2 - 15) + "," + y2 + " " + line_arrayx[j] + " ";
-                        else if (path == "tb")
-                            temp += x1 + "," + (y1 - 15) + " " + (x2 - min_x) + "," + (y1 - 15) + " " + (x2 - min_x) + "," + (y2 + 15) + " " + x2 + "," + (y2 + 15) + " " + line_arrayx[j] + " ";
-                        else if (path == "bt")
-                            temp += x1 + "," + (y1 + 15) + " " + (x2 - min_x) + "," + (y1 + 15) + " " + (x2 - min_x) + "," + (y2 - 15) + " " + x2 + "," + (y2 - 15) + " " + line_arrayx[j] + " ";
-                        else if (path == "lr")
-                            temp += (x1 - 15) + "," + y1 + " " + (x1 - 15) + "," + (y1 - min_y) + " " + (x2 + 15) + "," + (y2 - min_y) + " " + (x2 + 15) + "," + y2 + " " + line_arrayx[j] + " ";
-                        else if (path == "rl")
-                            temp += (x1 + 15) + "," + y1 + " " + (x1 + 15) + "," + (y1 - min_y) + " " + (x2 - 15) + "," + (y2 - min_y) + " " + (x2 - 15) + "," + y2 + " " + line_arrayx[j] + " ";
-                    }
-                }
+                LinesData = temp;
             }
-            LinesData = temp;
         }
+
+        return LinesData;
     }
 
-    return LinesData;
-}
+    function findLineArrayCollication(LinesData) {
+        var line_array1 = LinesData.split(" ");
 
-function findLineArrayCollication(LinesData) {
-    var line_array1 = LinesData.split(" ");
+        var temp2 = "";
+        for (var i = 0; i < line_array.length; i++) {
+            var line_array2 = line_array[i].LinesData.split(" ");
+            var line1_start = line_array1[0].split(",");
 
-    var temp2 = "";
-    for (var i = 0; i < line_array.length; i++) {
-        var line_array2 = line_array[i].LinesData.split(" ");
-        var line1_start = line_array1[0].split(",");
+            for (n = 0; n < line_array2.length - 1; n++) {
+                var line2_start = line_array2[n].split(",");
+                var line2_end = line_array2[n + 1].split(",");
 
-        for (n = 0; n < line_array2.length - 1; n++) {
-            var line2_start = line_array2[n].split(",");
-            var line2_end = line_array2[n + 1].split(",");
+                for (var m = 0; m < line_array1.length - 1; m++) {
+                    line1_start = line_array1[m].split(",");
+                    var line1_end = line_array1[m + 1].split(",");
 
-            for (var m = 0; m < line_array1.length - 1; m++) {
-                line1_start = line_array1[m].split(",");
-                var line1_end = line_array1[m + 1].split(",");
+                    var result = findLineCollication(line1_start[0], line1_start[1], line1_end[0], line1_end[1], line2_start[0], line2_start[1], line2_end[0], line2_end[1]);
 
-                var result = findLineCollication(line1_start[0], line1_start[1], line1_end[0], line1_end[1], line2_start[0], line2_start[1], line2_end[0], line2_end[1]);
+                    if (result != null) {
+                        var x_k = parseFloat(result[0]);
+                        var y_k = parseFloat(result[1]);
 
-                if (result != null) {
-                    var x_k = parseFloat(result[0]);
-                    var y_k = parseFloat(result[1]);
-
-                    if (line1_start[0] == line1_end[0]) //y
-                    {
-                        temp2 += "<line x1=\"" + line1_start[0] + "\" y1=\"" + (y_k - 5) + "\" x2=\"" + line1_start[0] + "\" y2=\"" + (y_k - 1.5) + "\" stroke=\"white\" stroke-width=\"4\"/>";
-                        temp2 += "<line x1=\"" + line1_start[0] + "\" y1=\"" + (y_k + 5) + "\" x2=\"" + line1_start[0] + "\" y2=\"" + (y_k + 1.5) + "\" stroke=\"white\"  stroke-width=\"4\" />";
-                        temp2 += "<defs><clipPath id=\"cut-off-" + x_k + "-" + y_k + "\">";
-                        temp2 += "<rect class=\"closed\" x=\"" + (x_k - 15) + "\" y=\"" + (y_k - 15) + "\" width=\"15\" height=\"30\" />";
-                        temp2 += "</clipPath></defs>";
-                        temp2 += "<circle cx=\"" + x_k + "\" cy=\"" + y_k + "\" r=\"7\" stroke-width=\"3\" stroke=\"black\" fill-opacity=\"0\" fill=\"white\" clip-path=\"url(#cut-off-" + x_k + "-" + y_k + ")\"/>";
-                    } else if (line1_start[1] == line1_end[1]) {
-                        temp2 += "<line x1=\"" + (x_k - 5) + "\" y1=\"" + line1_start[1] + "\" x2=\"" + (x_k - 1.5) + "\" y2=\"" + line1_start[1] + "\" stroke=\"white\" stroke-width=\"4\" />";
-                        temp2 += "<line x1=\"" + (x_k + 5) + "\" y1=\"" + line1_start[1] + "\" x2=\"" + (x_k + 1.5) + "\" y2=\"" + line1_start[1] + "\" stroke=\"white\"  stroke-width=\"4\" />";
-                        temp2 += "<defs><clipPath id=\"cut-off-" + x_k + "-" + y_k + "\">";
-                        temp2 += "<rect class=\"closed\" x=\"" + (x_k - 15) + "\" y=\"" + (y_k - 15) + "\" width=\"30\" height=\"15\" />";
-                        temp2 += "</clipPath></defs>";
-                        temp2 += "<circle cx=\"" + x_k + "\" cy=\"" + y_k + "\" r=\"7\" stroke-width=\"3\" stroke=\"black\" fill-opacity=\"0\" fill=\"white\" clip-path=\"url(#cut-off-" + x_k + "-" + y_k + ")\"/>";
+                        if (line1_start[0] == line1_end[0]) //y
+                        {
+                            temp2 += "<line x1=\"" + line1_start[0] + "\" y1=\"" + (y_k - 5) + "\" x2=\"" + line1_start[0] + "\" y2=\"" + (y_k - 1.5) + "\" stroke=\"white\" stroke-width=\"4\"/>";
+                            temp2 += "<line x1=\"" + line1_start[0] + "\" y1=\"" + (y_k + 5) + "\" x2=\"" + line1_start[0] + "\" y2=\"" + (y_k + 1.5) + "\" stroke=\"white\"  stroke-width=\"4\" />";
+                            temp2 += "<defs><clipPath id=\"cut-off-" + x_k + "-" + y_k + "\">";
+                            temp2 += "<rect class=\"closed\" x=\"" + (x_k - 15) + "\" y=\"" + (y_k - 15) + "\" width=\"15\" height=\"30\" />";
+                            temp2 += "</clipPath></defs>";
+                            temp2 += "<circle cx=\"" + x_k + "\" cy=\"" + y_k + "\" r=\"7\" stroke-width=\"3\" stroke=\"black\" fill-opacity=\"0\" fill=\"white\" clip-path=\"url(#cut-off-" + x_k + "-" + y_k + ")\"/>";
+                        } else if (line1_start[1] == line1_end[1]) {
+                            temp2 += "<line x1=\"" + (x_k - 5) + "\" y1=\"" + line1_start[1] + "\" x2=\"" + (x_k - 1.5) + "\" y2=\"" + line1_start[1] + "\" stroke=\"white\" stroke-width=\"4\" />";
+                            temp2 += "<line x1=\"" + (x_k + 5) + "\" y1=\"" + line1_start[1] + "\" x2=\"" + (x_k + 1.5) + "\" y2=\"" + line1_start[1] + "\" stroke=\"white\"  stroke-width=\"4\" />";
+                            temp2 += "<defs><clipPath id=\"cut-off-" + x_k + "-" + y_k + "\">";
+                            temp2 += "<rect class=\"closed\" x=\"" + (x_k - 15) + "\" y=\"" + (y_k - 15) + "\" width=\"30\" height=\"15\" />";
+                            temp2 += "</clipPath></defs>";
+                            temp2 += "<circle cx=\"" + x_k + "\" cy=\"" + y_k + "\" r=\"7\" stroke-width=\"3\" stroke=\"black\" fill-opacity=\"0\" fill=\"white\" clip-path=\"url(#cut-off-" + x_k + "-" + y_k + ")\"/>";
+                        }
+                        //çakýþma var
                     }
-                    //çakýþma var
-                }
-            }//                       
-        }
-    }//all lines
+                }//                       
+            }
+        }//all lines
 
-    return temp2;
-}
-
-function add_theObject(theObject) {
-    var col_error = false;
-    for (var i = 0; i < object_array.length; i++) {
-        if (findObjectCollication(theObject, object_array[i])) {
-            col_error = true;
-            break;
-        }
+        return temp2;
     }
 
-    if (!col_error) {
-        theObject.ID = "Object_" + (object_array.length + 1);
-        document.getElementById(id_theSVG).innerHTML += theObject.Draw();
-        object_array.push(theObject);        
-        return theObject;
+    function add_theObject(theObject) {
+        var col_error = false;
+        for (var i = 0; i < object_array.length; i++) {
+            if (findObjectCollication(theObject, object_array[i])) {
+                col_error = true;
+                break;
+            }
+        }
+
+        if (!col_error) {
+            theObject.ID = "Object_" + (object_array.length + 1);
+            document.getElementById(id_theSVG).innerHTML += theObject.Draw();
+            object_array.push(theObject);        
+            return theObject;
+        }
+        else
+            writeConsoleText("Object collision error / Objects are too close (min 40 px)", "warning");
+
+        return null;
     }
-    else
-        writeConsoleText("Object collision error / Objects are too close (min 40 px)", "warning");
 
-    return null;
-}
+    function draw_theLine(theLine) {
+        theLine.ID = "Line_" + (line_array.length + 1);
+        document.getElementById(id_theSVG).innerHTML += theLine.Draw();
+        line_array.push(theLine);
 
-function draw_theLine(theLine) {
-    theLine.ID = "Line_" + (line_array.length + 1);
-    document.getElementById(id_theSVG).innerHTML += theLine.Draw();
-    line_array.push(theLine);
-
-    return theLine;
-}
+        return theLine;
+    }
 
