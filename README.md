@@ -28,13 +28,17 @@ and then add svg element to body of a web page.
 ```
 and then connect library to the id of the SVG element.
 ```javascript
+<script>
 prepare_SVG("demo");
+</script>
 ```
 ##Creating SVG Shapes
 To draw objects, add_theObject function can be used for the given SVG element.
 ```javascript
+<script>
 var object1 = add_theObject(new Terminal(300, 50, 1, "Hello obfc.js", 20, "<h3>Description in HTML format</h3>"));
 var object2 = add_theObject(new Process(300, 150, 1, ["Line 1", "Line 2"], 10));
+</script>
 ```
 add_theObject is a function that adds the object into a given SVG element and returns this object. This returned object is used for drawing lines between two objects. There are 24 different SVG objects in obfc.js. 22 of them contain 9 parameters for creating an object. First two parameters are required, others are optimal. 
 ```javascript
@@ -52,7 +56,9 @@ Object_Name(_middle_x, _middle_y, _size, _description, _fill_color, _stroke_colo
 ##Creating Lines Between Objects
 After creating all objects, objects can be linked by using draw_theLine function.
 ```javascript
+<script>
 var o_line1 = draw_theLine(new Line(object1, object2, 1, 0, "Text", 12, "<b>Description in HTML format</b>"));
+</script>
 ```
 Line is a function that determines the path for given two objects and their positions. This function has 9 parameters. First two parameter is required and others are optimal.
 ```javascript
