@@ -4,7 +4,7 @@ obfc.js is an object-based JavaScript Library for drawing SVG flow charts acroos
 # More documents about obfc.js
 * <a href="http://www.e-adys.com/category/obfcjs" target="_blank">All Posts</a>
 * <a href="http://www.e-adys.com/post/obfc-js-example" target="_blank">An Example</a>
-* <a href="http://www.e-adys.com/post/properties-of-a-svg-shape" target="_blank">Properties of a SVG shape</a>
+* <a href="https://www.e-adys.com/obfc-js/obfc-js-properties-of-a-svg-shape" target="_blank">Properties of a SVG shape</a>
 * <a href="http://www.e-adys.com/post/obfc-js-all-svg-shapes" target="_blank">All SVG Shapes</a>
 * <a href="http://www.e-adys.com/post/obfc-js-creating-lines-free-draw-and-free-write-function" target="_blank">Creating Lines</a>
 * <a href="http://www.e-adys.com/post/obfc-js-collision-detection-editmode-and-console-log" target="_blank">Collision Detection, Editmode and Console.log</a>
