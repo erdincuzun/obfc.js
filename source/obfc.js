@@ -1,6 +1,6 @@
 // Object Based Flow Charts 
-// obfc.js, v1.1
-// Copyright (c)2017 Erdinç Uzun
+// obfc.js, v1.2
+// Copyright (c)2018 Erdinç Uzun
 // Distributed under MIT license
 // https://github.com/erdincuzun/obfc.js
 
@@ -15,6 +15,8 @@ var fill_color = "white";
 var stroke_color = "black";
 var text_color = "black";
 var highlight_color = "red";
+var onclick_enabled = true;
+var objectcollision_enabled = true;
 
 function prepare_SVG(_id_theSVG) {   
     id_theSVG = _id_theSVG; 	
@@ -50,7 +52,7 @@ function Process(_middle_x, _middle_y, _size, _text, _text_size, _description, _
     this.size = _size;
     this.text = _text;
     if (typeof _text_size === 'undefined' || _text_size == null)
-        _text_size = 1;
+        _text_size = 12;
     this.text_size = _text_size * _size;
     this.probable_x_y = [[0, 0], [0, 0], [0, 0], [0, 0]]; //top_bottom_left_right
     this.points = [false, false, false, false]; //status of connection points
@@ -103,7 +105,10 @@ function Process(_middle_x, _middle_y, _size, _text, _text_size, _description, _
     this.probable_x_y[3][1] = this.middle_y;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" "; 
+        temp += "style=\"cursor:pointer\">";
         temp += "<rect x=\"" + this.start_x + "\" y=\"" + this.start_y + "\" width=\"" + this.width + "\" height=\"" + this.height + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
             temp += writeText(this.text, this.text_size, "normal", this.middle_x, this.middle_y, this.height, "center", _text_color);
@@ -117,7 +122,10 @@ function PredefinedProcess(_middle_x, _middle_y, _size, _text, _text_size, _desc
     this.Name = "Predefined Process";
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<rect x=\"" + this.start_x + "\" y=\"" + this.start_y + "\" width=\"" + this.width + "\" height=\"" + this.height + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.start_x + this.width / 10) + "\" y1=\"" + this.start_y + "\" x2=\"" + (this.start_x + this.width / 10) + "\" y2=\"" + (this.start_y + this.height) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.start_x + this.width - this.width / 10) + "\" y1=\"" + this.start_y + "\" x2=\"" + (this.start_x + this.width - this.width / 10) + "\" y2=\"" + (this.start_y + this.height) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
@@ -136,7 +144,10 @@ function AlternateProcess(_middle_x, _middle_y, _size, _text, _text_size, _descr
         var rx = 5 * this.size;
         var ry = 5 * this.size;
 
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<rect x=\"" + this.start_x + "\" y=\"" + this.start_y + "\" rx=\"" + rx + "\" ry=\"" + ry + "\" width=\"" + this.width + "\" height=\"" + this.height + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
             temp += writeText(this.text, this.text_size, "normal", this.middle_x, this.middle_y, this.height, "center", _text_color);
@@ -164,7 +175,10 @@ function Delay(_middle_x, _middle_y, _size, _text, _text_size, _description, _fi
         var ry = 5 * this.size;
         var width2 = 220 * this.size;
 
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<path d=\"M" + this.start_x + " " + this.start_y + " L" + (this.start_x + this.width / 2) + " " + this.start_y + " "
             + "C" + (this.start_x + this.width / 2) + " " + this.start_y + ", " + (this.start_x + width2)+" " + (this.start_y+this.height/2) + ", " + (this.start_x + this.width / 2) + " " + (this.start_y+this.height) + " "
             + "L" + this.start_x + " " + (this.start_y+this.height) + " L" + this.start_x + " " + this.start_y + "\" " 
@@ -197,7 +211,10 @@ function Preparation(_middle_x, _middle_y, _size, _text, _text_size, _descriptio
     this.probable_x_y[3][1] = this.middle_y;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<polygon points=\"" + (this.start_x + (25 * this.size)) + "," + this.start_y + " " + (this.start_x + this.width - (25 * this.size)) + "," + this.start_y + " "
             + (this.start_x + this.width) + "," + (this.start_y + this.height - (25 * this.size)) + " " + (this.start_x + this.width - (25 * this.size)) + "," + (this.start_y + this.height) + " "
             + (this.start_x + (25 * this.size)) + "," + (this.start_y + this.height) + " " + this.start_x + "," + (this.start_y + this.height - (25 * this.size))
@@ -221,7 +238,10 @@ function ManualOperation(_middle_x, _middle_y, _size, _text, _text_size, _descri
     this.probable_x_y[3][1] = this.middle_y;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<polygon points=\"" + this.start_x + "," + this.start_y + " " + (this.start_x + this.width) + "," + this.start_y + " "
             + (this.start_x + this.width - 20 * this.size) + "," + (this.start_y + this.height) + " " + (this.start_x + 20 * this.size) + "," + (this.start_y + this.height) + " "            
             + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
@@ -244,7 +264,10 @@ function Terminal(_middle_x, _middle_y, _size, _text, _text_size, _description, 
         var rx = 25 * this.size;
         var ry = 35 * this.size;
 
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<rect x=\"" + this.start_x + "\" y=\"" + this.start_y + "\" rx=\"" + rx + "\" ry=\"" + ry + "\" width=\"" + this.width + "\" height=\"" + this.height + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
             temp += writeText(this.text, this.text_size, "normal", this.middle_x, this.middle_y, this.height, "center", _text_color);
@@ -280,7 +303,10 @@ function Decision(_middle_x, _middle_y, _size, _text, _text_size, _description, 
     this.probable_x_y[3][0] = this.middle_x + Math.sqrt(this.width_c * this.width_c / 2);
     this.probable_x_y[3][1] = this.middle_y;
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<rect transform=\"rotate(45 " + (this.middle_x) + " " + (this.middle_y) + ")\" x=\"" + this.start_x_c + "\" y=\"" + this.start_y_c + "\" width=\"" + this.width_c + "\" height=\"" + this.height_c + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
             temp += writeText(this.text, this.text_size, "normal", this.middle_x, this.middle_y, this.height * 2 / 5, "center", _text_color);
@@ -308,7 +334,10 @@ function Connector(_middle_x, _middle_y, _size, _text, _text_size, _description,
     this.probable_x_y[3][1] = this.middle_y;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<circle cx=\"" + this.middle_x+ "\" cy=\"" + this.middle_y + "\" r=\"" + (this.width / 2) + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
             temp += writeText(this.text, this.text_size, "normal", this.middle_x, (this.middle_y-2), this.height, "center", _text_color);
@@ -336,8 +365,10 @@ function OffPage_Connector(_middle_x, _middle_y, _size, _text, _text_size, _desc
     this.probable_x_y[3][1] = this.middle_y - 5 * this.size;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
-        style =
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<polygon points=\"" + this.start_x + "," + this.start_y + " " + (this.start_x + this.width) + "," + this.start_y + " "
             + (this.start_x + this.width) + "," + (this.start_y + this.height - 10 * this.size) + " " + (this.middle_x) + "," + (this.middle_y + this.height / 2) + " "
             + (this.start_x) + "," + (this.start_y + this.height - 10 * this.size) + " "
@@ -355,7 +386,10 @@ function OR(_middle_x, _middle_y, _size, _description, _fill_color, _stroke_colo
     this.Name = "OR";
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<circle cx=\"" + this.middle_x + "\" cy=\"" + this.middle_y + "\" r=\"" + (this.width / 2) + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.middle_x) + "\" y1=\"" + (this.middle_y - this.width / 2) + "\" x2=\"" + (this.middle_x) + "\" y2=\"" + (this.middle_y + this.width / 2) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.middle_x - this.width / 2) + "\" y1=\"" + (this.middle_y) + "\" x2=\"" + (this.middle_x + this.width / 2) + "\" y2=\"" + (this.middle_y) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
@@ -371,7 +405,10 @@ function SummingJunction(_middle_x, _middle_y, _size, _description, _fill_color,
 
     this.Draw = function () {
         var kose = Math.sqrt(this.width * this.width / 8);
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<circle cx=\"" + this.middle_x + "\" cy=\"" + this.middle_y + "\" r=\"" + (this.width / 2) + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.middle_x-kose) + "\" y1=\"" + (this.middle_y - kose) + "\" x2=\"" + (this.middle_x + kose) + "\" y2=\"" + (this.middle_y + kose) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.middle_x+kose) + "\" y1=\"" + (this.middle_y - kose) + "\" x2=\"" + (this.middle_x - kose) + "\" y2=\"" + (this.middle_y + kose) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
@@ -400,7 +437,10 @@ function Data(_middle_x, _middle_y, _size, _text, _text_size, _description, _fil
     this.probable_x_y[3][1] = this.middle_y;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<polygon points=\"" + (this.start_x + (20 * this.size)) + "," + this.start_y + " " + (this.start_x + this.width) + "," + this.start_y + " " + (this.start_x + this.width - (20 * this.size)) + "," + (this.start_y + this.height) + " " + this.start_x + "," + (this.start_y + this.height) + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
             temp += writeText(this.text, this.text_size, "normal", this.middle_x, this.middle_y, this.height, "center", _text_color);
@@ -420,7 +460,10 @@ function Document(_middle_x, _middle_y, _size, _text, _text_size, _description, 
     this.probable_x_y[3][1] = this.middle_y;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<path d=\"M " + this.start_x + " " + this.start_y + " L " + this.start_x + " " + (this.start_y + this.height) + " ";
         temp += "Q " + (this.start_x + this.width / 4) + " " + (this.start_y + this.height + 15 * this.size) + ", " + (this.start_x + this.width / 2) + " " + (this.start_y + this.height);
         temp += "T " + (this.start_x + this.width) + " " + (this.start_y + this.height);
@@ -445,7 +488,10 @@ function MultiDocument(_middle_x, _middle_y, _size, _text, _text_size, _descript
 
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         for (var i = 0; i < 3; i++) {
             var m = - i * 4 * this.size;
             temp += "<path d=\"M " + (this.start_x + m) + " " + (this.start_y - m) + " L " + (this.start_x + m) + " " + ((this.start_y - m) + this.height) + " ";
@@ -471,7 +517,10 @@ function Display(_middle_x, _middle_y, _size, _text, _text_size, _description, _
     this.probable_x_y[3][1] = this.middle_y;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<path d=\"M " + (this.start_x + 15 * this.size) + " " + this.start_y + " L " + (this.start_x + this.width - 20 * this.size) + " " + (this.start_y) + " ";
         temp += "Q " + (this.start_x + this.width + 17 * this.size) + " " + (this.middle_y) + ", " + (this.start_x + this.width - 20 * this.size) + " " + (this.start_y + this.height);
         temp += "L " + (this.start_x + 15 * this.size) + " " + (this.start_y + this.height) + " ";
@@ -495,7 +544,10 @@ function ManualInput(_middle_x, _middle_y, _size, _text, _text_size, _descriptio
     this.probable_x_y[2][1] = this.middle_y + 3 * this.size;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<polygon points=\"" + (this.start_x) + "," + (this.start_y + 10 * this.size) + " " + (this.start_x + this.width) + ","
             + this.start_y + " " + (this.start_x + this.width) + "," + (this.start_y + this.height) + " " + this.start_x + ","
             + (this.start_y + this.height)
@@ -518,7 +570,10 @@ function Card(_middle_x, _middle_y, _size, _text, _text_size, _description, _fil
     this.probable_x_y[2][1] = this.middle_y + 3 * this.size;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<polygon points=\"" + (this.start_x) + "," + (this.start_y + 10 * this.size) + " " + (this.start_x + 15 * this.size) + "," + (this.start_y) +
             " " + (this.start_x + this.width) + "," + this.start_y + " " + (this.start_x + this.width) + "," + (this.start_y + this.height) + " " + this.start_x + "," + (this.start_y + this.height) + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
@@ -534,7 +589,10 @@ function PunchedTape(_middle_x, _middle_y, _size, _text, _text_size, _descriptio
     this.Name = "Punched Tape";
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<path d=\"M " + this.start_x + " " + this.start_y + " L " + this.start_x + " " + (this.start_y + this.height) + " ";
         temp += "Q " + (this.start_x + this.width / 4) + " " + (this.start_y + this.height + 10 * this.size) + ", " + (this.start_x + this.width / 2) + " " + (this.start_y + this.height);
         temp += "T " + (this.start_x + this.width) + " " + (this.start_y + this.height);
@@ -562,7 +620,10 @@ function StoredData(_middle_x, _middle_y, _size, _text, _text_size, _description
     this.probable_x_y[3][1] = this.middle_y;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<path d=\"M " + (this.start_x + 15 * this.size) + " " + this.start_y + " L " + (this.start_x + this.width) + " " + (this.start_y) + " ";
         temp += "Q " + (this.start_x + this.width - 15 * this.size) + " " + (this.middle_y) + "," + (this.start_x + this.width) + " " + (this.start_y + this.height); + " ";
         temp += "L " + (this.start_x + 15 * this.size) + " " + (this.start_y + this.height) + " ";
@@ -595,7 +656,10 @@ function MagneticDisk(_middle_x, _middle_y, _size, _text, _text_size, _descripti
     this.probable_x_y[3][1] = this.middle_y - 5 * this.size;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<path d=\"M " + (this.start_x) + " " + (this.start_y);
         temp += " Q " + (_middle_x) + " " + (this.middle_y - this.height / 2 - 15 * this.size) + ", " + (this.start_x + this.width) + " " + (this.start_y);
         temp += " L " + (this.start_x + this.width) + " " + (this.start_y + this.height);
@@ -631,7 +695,10 @@ function DirectAccess(_middle_x, _middle_y, _size, _text, _text_size, _descripti
     this.probable_x_y[3][1] = this.middle_y - 5 * this.size;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<path d=\"M " + (this.start_x) + " " + (this.start_y);
         temp += " L " + (this.start_x + this.width) + " " + (this.start_y);
         temp += " Q " + (this.start_x + this.width + 25 * this.size) + " " + (this.middle_y) + ", " + (this.start_x + this.width) + " " + (this.start_y + this.height);
@@ -666,7 +733,10 @@ function InternalStorage(_middle_x, _middle_y, _size, _text, _text_size, _descri
     this.probable_x_y[3][1] = this.middle_y - 5 * this.size;
 
     this.Draw = function () {
-        temp = "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";
         temp += "<rect x=\"" + this.start_x + "\" y=\"" + this.start_y + "\" width=\"" + this.width + "\" height=\"" + this.height + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.start_x) + "\" y1=\"" + (this.start_y + this.height / 5) + "\" x2=\"" + (this.start_x + this.width) + "\" y2=\"" + (this.start_y + this.height / 5) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<line x1=\"" + (this.start_x + this.width / 5) + "\" y1=\"" + this.start_y + "\" x2=\"" + (this.start_x + this.width / 5) + "\" y2=\"" + (this.start_y + this.height) + "\" style=\"stroke:" + this.stroke_color + ";stroke-width:2\" />";
@@ -700,7 +770,10 @@ function MagneticTape(_middle_x, _middle_y, _size, _text, _text_size, _descripti
         temp += "<rect class=\"closed\" x=\"" + this.start_x + "\" y=\"" + (this.start_y + this.height / 70 * 50) + "\" width=\"" + (this.width / 70 * 40) + "\" height=\"" + (this.height / 70 * 52) + "\" />";
         temp += "</clipPath></defs>";
 
-        temp += "<g id=\"" + this.ID + "\" onclick=\"doClick_Object(evt)\" style=\"cursor:pointer\">";       
+        temp = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp += "onclick=\"doClick_Object(evt)\" ";
+        temp += "style=\"cursor:pointer\">";       
         temp += "<rect x=\"" + (this.start_x + this.width / 2) + "\" y=\"" + (this.start_y + this.height / 70 * 50) + "\" width=\"" + (this.width / 70 * 40) + "\" height=\"" + (this.height / 70 * 18) + "\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         temp += "<circle cx=\"" + _middle_x + "\" cy=\"" + _middle_y + "\" r=\"" + (this.height / 70 * 33) + "\" clip-path=\"url(#magTape_" + this.ID.substring(7) + ")\" style=\"fill:" + this.fill_color + ";stroke:" + this.stroke_color + ";stroke-width:2\" />";
         if (this.text.length > 0)
@@ -726,7 +799,8 @@ function doClick_Object(evt) {
             var theID_int = parseInt(theID.substring(5));
             var theLine = line_array[theID_int - 1];
             theLines[i].setAttribute("style", "fill:none;stroke:" + theLine.stroke_color + ";stroke-width:2");
-            theLines[i].setAttribute("marker-end", "url(#arrow)");
+            if (theLines[i].hasAttribute("marker-end"))
+                theLines[i].setAttribute("marker-end", "url(#arrow)");
         }
     }
 
@@ -805,7 +879,7 @@ function writeConsoleText(_text, _state) {
     console.log("%c" + _text, _color);
 }
 
-function writeText(_text, _text_size, _font_weight, _middle_x, _middle_y, _object_height, _align, _text_color) {
+function writeText(_text, _text_size, _font_weight, _middle_x, _middle_y, _object_height, _align, _text_color, _underline) {
     if (typeof _text === 'undefined' || _text == null)
         _text = ["Empty Text"];
     else if (typeof _text === 'string')
@@ -826,12 +900,19 @@ function writeText(_text, _text_size, _font_weight, _middle_x, _middle_y, _objec
         _align = "";
     if (typeof _text_color === 'undefined' || _text_color == null)
         _text_color = "black";
+    if (typeof _underline === 'undefined' || _underline == null)
+        _underline = false;
 
     var _row_count = _text.length;   
     var _row_size = _object_height / _row_count;
     var _pos = _middle_y - (_object_height / 2) + (_row_size / 2) + 6;
 
-    var temp = "<text x=\"" + _middle_x + "\" y=\"" + _middle_y + "\" " + _align + " font-family=\"Verdana\" font-size=\"" + _text_size + "\" font-weight=\"" + _font_weight + "\" fill=\"" + _text_color + "\">"
+    var temp = "<text x=\"" + _middle_x + "\" y=\"" + _middle_y + "\" " + _align + " font-family=\"Verdana\" font-size=\"" +
+        _text_size + "\" font-weight=\"" + _font_weight + "\" fill=\"" + _text_color + "\"";
+    if (_underline)
+        temp += " text-decoration = \"underline\"";
+
+        temp += "> ";
     for (var i = 0; i < _row_count; i++) {
         temp += "<tspan x=\"" + _middle_x + "\" y=\"" + _pos + "\">" + _text[i] + "</tspan>";
         _pos += _row_size;
@@ -840,7 +921,7 @@ function writeText(_text, _text_size, _font_weight, _middle_x, _middle_y, _objec
     return temp;
 }
 
-function Line(object1, object2, position1, position2, _text, _text_size, _description, _stroke_color, _text_color) {
+function Line(object1, object2, position1, position2, _text, _text_size, _description, _stroke_color, _text_color, _arrow) {
     this.Name = "Line";
     this.ID = "";
     
@@ -870,9 +951,14 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
     else
         this.text_color = _text_color;
 
+    this.arrow = true;
+    if (!(typeof _arrow === 'undefined' || _arrow == null))
+        this.arrow = _arrow;
+
+
     if (!(typeof object1 === 'undefined' || object1 == null) && !(typeof object2 === 'undefined' || object2 == null)) {
         this.o1_probable_x_y = object1.probable_x_y;
-        this.o2_probable_x_y = object2.probable_x_y;
+        this.o2_probable_x_y = object2.probable_x_y;        
 
         if (typeof position1 === 'undefined' || position1 == null || typeof position2 === 'undefined' || position2 == null) {
             position1 = -1;
@@ -880,16 +966,17 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
         }
             
         //find positions if position value = -1
-        if (position1 == -1 || position2 == -1) {
-            var _p = Connect_Two_Objects(object1, object2);
+        if (position1 == -1 || position2 == -1) {            
+            var _p = Connect_Two_Objects(object1, object2);            
             if (_p != null) {
                 position1 = _p[0];
                 position2 = _p[1];
-               
+                
                 var _theID_int1 = parseInt(object1.ID.substring(7));
+                
                 object_array[_theID_int1 - 1].points[position1] = true;
                 var _theID_int2 = parseInt(object2.ID.substring(7));
-                object_array[_theID_int2 - 1].points[position2] = true;               
+                object_array[_theID_int2 - 1].points[position2] = true;     
             }            
         }            
 
@@ -914,22 +1001,24 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
         //this.line_start_end_x_y = [[0, 0], [0, 0]];//line - start and end coordinates to draw a new line to connect this line
         var selection1 = [0, 0];
         var selection2 = [0, 0];
+        this.selection1 = [0, 0]; // for line2
+        this.selection2 = [0, 0];
+
         if (object1 != null && object2 != null) {
             selection1 = [this.o1_probable_x_y[position1][0], this.o1_probable_x_y[position1][1]];
             selection2 = [this.o2_probable_x_y[position2][0], this.o2_probable_x_y[position2][1]];
+            this.selection1 = [this.o1_probable_x_y[position1][0], this.o1_probable_x_y[position1][1]];
+            this.selection2 = [this.o2_probable_x_y[position2][0], this.o2_probable_x_y[position2][1]];
         }
     }
 
     //Array first parameter: 0_top, 1_bottom, 2_left, 3_right
     this.LinesData = "";
 
-
     this.Draw = function () {
         if (object1 == null || object2 == null)
             return ""; //object error so no line draw   
         //document.getElementById("test").innerHTML += "p: " + position1 + " - " + position2 + "<br />";
-        //document.getElementById("test").innerHTML += "x: " + selection1[0] + " - " + selection2[0] + " = " + (selection1[0] - selection2[0]) + "<br>";
-        //document.getElementById("test").innerHTML += "y: " + selection1[1] + " - " + selection2[1] + " = " + (selection1[1] - selection2[1]) + "<br>";
 
         var c1 = 10 * this.o1_size;
         var c2 = 10 * this.o2_size;
@@ -1516,8 +1605,8 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
             temp += selection1[0] + "," + selection1[1] + " " + selection2[0] + "," + selection2[1];
         }
 
-        temp = findObjectArrayLineCollication(temp); //all objects        
-        var temp2 = findLineArrayCollication(temp); //all lines 
+        temp = findObjectArrayLinecollision(temp); //all objects        
+        var temp2 = findLineArraycollision(temp); //all lines 
         //document.getElementById("desc").innerHTML += "Burdayým <br />" + temp;
 
         this.LinesData = temp;
@@ -1528,13 +1617,19 @@ function Line(object1, object2, position1, position2, _text, _text_size, _descri
         }
         else
             temp = polyline_start + " \"" + temp + "\" " + polyline_end.replace("black", this.stroke_color);
-
+        
+        if (!this.arrow)
+            temp = temp.replace("marker-end=\"url(#arrow)\"", "");
+            
         if (this.text.length > 0) {
             var _mid_xy = this.findLongestLinePoint();
             temp += writeText(this.text, this.text_size, "normal", (_mid_xy[0] + 3), (_mid_xy[1] - 10), 30, _mid_xy[2], this.text_color);
         }
 
-        var temp_end = "<g id=\"" + this.ID + "\" onclick=\"doClick_Line(evt)\" style=\"cursor:pointer\">";
+        var temp_end = "<g id=\"" + this.ID + "\" ";
+        if (onclick_enabled)
+            temp_end += "onclick=\"doClick_Line(evt)\" ";
+        temp_end += "style=\"cursor:pointer\">";
         temp_end += temp;
         temp_end += "</g>";
 
@@ -1575,6 +1670,7 @@ function doClick_Line(evt) {
     //paint all svg rects and polylines with their selected colors...
     var theSvg = document.getElementById("demo");
     var theLines = theSvg.getElementsByTagName("polyline");
+writeConsoleText("OKKK", "information");
 
     for (var i = 0; i < theLines.length; i++) {
         if (theLines[i].parentNode.getAttribute("id").indexOf("Line_") != -1) {
@@ -1582,7 +1678,8 @@ function doClick_Line(evt) {
             var theID_int = parseInt(theID.substring(5));
             var theLine = line_array[theID_int - 1];
             theLines[i].setAttribute("style", "fill:none;stroke:" + theLine.stroke_color + ";stroke-width:2");
-            theLines[i].setAttribute("marker-end", "url(#arrow)");
+            if (theLines[i].hasAttribute("marker-end"))
+                theLines[i].setAttribute("marker-end", "url(#arrow)");
         }
     }
 
@@ -1597,17 +1694,19 @@ function doClick_Line(evt) {
                 if (theTags[j] != "Line")
                     theTag[i].setAttribute("style", "fill:" + theObjectx.fill_color + ";stroke:" + theObjectx.stroke_color + ";stroke-width:2");
                 else
-                    theLines[i].setAttribute("style", "stroke:" + theObjectx.stroke_color + ";stroke-width:2");
+                    theLines[i].setAttribute("style", "stroke:" + theObjectx.stroke_color + ";stroke-width:2");                    
             }
         }
     }
 
     var theLine = evt.target.parentElement.children;
+	
     if (theLine[0].nodeName == "tspan")
         theLine = evt.target.parentElement.parentElement.children; //tspan etiketine týklarsa, parent iki üstte
     if (theLine[0].nodeName == "polyline") {
         theLine[0].setAttribute("style", "fill:none;stroke:" + highlight_color + ";stroke-width:3");
-        theLine[0].setAttribute("marker-end", "url(#arrow2)");
+        if (theLine[0].hasAttribute("marker-end"))//arrow or not
+            theLine[0].setAttribute("marker-end", "url(#arrow2)");
         var theID = theLine[0].parentElement.getAttribute('id');
         var theID_int = parseInt(theID.substring(5));
         var theLine = line_array[theID_int - 1];
@@ -1615,6 +1714,7 @@ function doClick_Line(evt) {
         temp += theLine.LinesData;
 
         writeConsoleText(temp, "information");
+        
         document.getElementById(id_theDesc).innerHTML = theLine.description; //desc
     }
 
@@ -1686,9 +1786,9 @@ function free_draw(str, start_position, _stroke_color) {
             temp += x + "," + y + " ";
     }
     temp = temp.trim();
-    temp = findObjectArrayLineCollication(temp);
+    temp = findObjectArrayLinecollision(temp);
     
-    var temp2 = findLineArrayCollication(temp);    
+    var temp2 = findLineArraycollision(temp);    
     var temp3 = "";
     if (temp2 != "") {
         temp3 = polyline_start + " \"" + temp + "\" " + polyline_end.replace("black", _stroke_color) + temp2;
@@ -1708,7 +1808,7 @@ function free_write(_text, _text_size, _font_weight, _middle_x, _middle_y, _heig
 }
 
 ////Collision
-function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
+function findLinecollision(x1, y1, x2, y2, x3, y3, x4, y4) {
     //for big number problem
     x1 = Math.round(x1 * 100) / 100;
     x2 = Math.round(x2 * 100) / 100;
@@ -1752,7 +1852,7 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
     return null;
 }
 
-    function findObjectCollication(object1, object2) {
+    function findObjectcollision(object1, object2) {
         var o1_lines = [[object1.start_x - 40, object1.start_y - 40, object1.start_x + object1.width + 40, object1.start_y - 40],
                     [object1.start_x - 40, object1.start_y - 40, object1.start_x - 40, object1.start_y + object1.height + 40],
                     [object1.start_x + object1.width + 40, object1.start_y - 40, object1.start_x + object1.width + 40, object1.start_y + object1.height + 40],
@@ -1765,7 +1865,7 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
         var result = false;
         for (var i = 0; i < o1_lines.length; i++) {
             for (var j = 0; j < o2_lines.length; j++) {
-                var result = findLineCollication(o1_lines[i][0], o1_lines[i][1], o1_lines[i][2], o1_lines[i][3], o2_lines[j][0], o2_lines[j][1], o2_lines[j][2], o2_lines[j][3]);
+                var result = findLinecollision(o1_lines[i][0], o1_lines[i][1], o1_lines[i][2], o1_lines[i][3], o2_lines[j][0], o2_lines[j][1], o2_lines[j][2], o2_lines[j][3]);
                 if (result != null) {
                     return true;
                 }
@@ -1775,7 +1875,7 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
         return result;
     }
 
-    function findObjectArrayLineCollication(LinesData) {
+    function findObjectArrayLinecollision(LinesData) {
         for (var i = 0; i < object_array.length; i++) {
             var line_arrayx = LinesData.split(" ");
             var objectx = object_array[i];
@@ -1793,7 +1893,7 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
                 var linex_start = line_arrayx[j].split(",");
                 var linex_end = line_arrayx[j + 1].split(",");
                 for (var m = 0; m < ox_lines.length; m++) {
-                    var result = findLineCollication(ox_lines[m][0], ox_lines[m][1], ox_lines[m][2], ox_lines[m][3], linex_start[0], linex_start[1], linex_end[0], linex_end[1]);
+                    var result = findLinecollision(ox_lines[m][0], ox_lines[m][1], ox_lines[m][2], ox_lines[m][3], linex_start[0], linex_start[1], linex_end[0], linex_end[1]);
 
                     if (result != null) {
                         if (i == 0) path += "t";
@@ -1880,7 +1980,7 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
         return LinesData;
     }
 
-    function findLineArrayCollication(LinesData) {
+    function findLineArraycollision(LinesData) {
         var line_array1 = LinesData.split(" ");
 
         var temp2 = "";
@@ -1896,7 +1996,7 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
                     line1_start = line_array1[m].split(",");
                     var line1_end = line_array1[m + 1].split(",");
 
-                    var result = findLineCollication(line1_start[0], line1_start[1], line1_end[0], line1_end[1], line2_start[0], line2_start[1], line2_end[0], line2_end[1]);
+                    var result = findLinecollision(line1_start[0], line1_start[1], line1_end[0], line1_end[1], line2_start[0], line2_start[1], line2_end[0], line2_end[1]);
 
                     if (result != null) {
                         var x_k = parseFloat(result[0]);
@@ -1929,13 +2029,15 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
 
     function add_theObject(theObject) {
         var col_error = false;
-        for (var i = 0; i < object_array.length; i++) {
-            if (findObjectCollication(theObject, object_array[i])) {
-                col_error = true;
-                break;
+        if (objectcollision_enabled) {
+            for (var i = 0; i < object_array.length; i++) {
+                if (findObjectcollision(theObject, object_array[i])) {
+                    col_error = true;
+                    break;
+                }
             }
         }
-
+        
         if (!col_error) {
             theObject.ID = "Object_" + (object_array.length + 1);
             document.getElementById(id_theSVG).innerHTML += theObject.Draw();
@@ -1954,5 +2056,19 @@ function findLineCollication(x1, y1, x2, y2, x3, y3, x4, y4) {
         line_array.push(theLine);
 
         return theLine;
+    }
+
+    function prepareClassforAnimation(Objects) {
+        var cnt = 0;
+        for (i = 0; i < Objects.length; i++) {
+            var theObject = Objects[i];
+            if (typeof theObject.ID === 'undefined' || theObject == null) {
+                for (j = 0; j < theObject.length; j++)//groups
+                    if (!(typeof theObject[j] === 'undefined' || theObject[j] == null))
+                        document.getElementById(theObject[j].ID).setAttribute("class", "animation group o" + i);
+            }
+            else
+                document.getElementById(theObject.ID).setAttribute("class", "animation o" + i);                
+        }
     }
 
