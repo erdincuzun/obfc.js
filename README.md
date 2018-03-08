@@ -32,7 +32,7 @@ and then connect library to the id of the SVG element.
 prepare_SVG("demo");
 </script>
 ```
-#Creating SVG Shapes
+# Creating SVG Shapes
 To draw objects, add_theObject function can be used for the given SVG element.
 ```javascript
 <script>
@@ -54,7 +54,7 @@ Object_Name(_middle_x, _middle_y, _size, _text, _text_size, _description, _fill_
 2 of them (OR and  SummingJunction) contain 7 parameter. These objects are not included parameters of _text and _text_size.
 Object_Name(_middle_x, _middle_y, _size, _description, _fill_color, _stroke_color, _text_color);
 
-#Creating Lines Between Objects
+# Creating Lines Between Objects
 
 After creating all objects, objects can be linked by using draw_theLine function.
 ```javascript
