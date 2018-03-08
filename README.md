@@ -71,6 +71,10 @@ Line(object1, object2, position1, position2, _text, _text_size, _description, _s
 * _text and _text: text in line. This function selects the longest sub-line for writing text. 
 * description, _stroke_color, _text_color: (same with previous section)
 
+# Animation
+(ver 1.2.)
+<a href="https://www.e-adys.com/web_tasarimi_programlama/animation-for-your-web-pages/" target="_blank">Click for more information.</a>
+
 # Licence
 Copyright (c) 2017 Erdinç Uzun
 
