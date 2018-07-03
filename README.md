@@ -80,7 +80,6 @@ Line(object1, object2, position1, position2, _text, _text_size, _description, _s
 
 <b>Object-based flowchart drawing library.</b> Uzun, E.; and Buluş, H., N. In 2017 International Conference on Computer Science and Engineering (UBMK), pages 110-115, 2017. 
 
-<br />
 <a href="https://www.e-adys.com/yayinlar/" target="_blank">Click for bibtex, downloads, all publications...</a>
 
 # Licence
