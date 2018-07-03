@@ -76,7 +76,7 @@ Line(object1, object2, position1, position2, _text, _text_size, _description, _s
 <a href="https://www.e-adys.com/web_tasarimi_programlama/animation-for-your-web-pages/" target="_blank">Click for more information.</a>
 
 # Publications
-<b>Comparison of Python Libraries used for Web Data Extraction.</b> Uzun, E.; Yerlikaya, T.; and Kırat, O. In 7th International Scientific Conference “TechSys 2018” – Engineering, Technologies and Systems, Technical University of Sofia, Plovdiv Branch May 17-19, pages 108-113, 2018.
+<b>Evaluation of Hap, AngleSharp and HtmlDocument in web content extraction.</b> Uzun, E.; Buluş, H., N.; Doruk, A.; and Özhan, E. In International Scientific Conference’2017 (UNITECH’17), volume 2, pages 275-278, 2017. 
 
 <a href="https://www.e-adys.com/yayinlar/" target="_blank">Click for bibtex, downloads, all publications...</a>
 
