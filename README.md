@@ -75,9 +75,9 @@ Line(object1, object2, position1, position2, _text, _text_size, _description, _s
 (ver 1.2.)
 <a href="https://www.e-adys.com/web_tasarimi_programlama/animation-for-your-web-pages/" target="_blank">Click for more information.</a>
 
-# Publication
-<b>Object-based Entity Relationship Diagram Drawing Library: EntRel.JS.</b> Uzun, E.; Yerlikaya, T.; and Kırat, O. In 7th International Scientific Conference “TechSys 2018” – Engineering, Technologies and Systems, Technical University of Sofia, Plovdiv Branch May 17-19, pages 114-119, 2018. 
-<a href="https://www.e-adys.com/yayinlar/" target="_blank">All publications...</a>
+# Publications
+<b>Object-based Entity Relationship Diagram Drawing Library: EntRel.JS.</b> Uzun, E.; Yerlikaya, T.; and Kırat, O. In 7th International Scientific Conference “TechSys 2018” – Engineering, Technologies and Systems, Technical University of Sofia, Plovdiv Branch May 17-19, pages 114-119, 2018. <br />
+<a href="https://www.e-adys.com/yayinlar/" target="_blank">Click for bibtex, downloads, all publications...</a>
 
 # Licence
 Copyright (c) 2017 Erdinç Uzun
