@@ -76,7 +76,7 @@ Line(object1, object2, position1, position2, _text, _text_size, _description, _s
 <a href="https://www.e-adys.com/web_tasarimi_programlama/animation-for-your-web-pages/" target="_blank">Click for more information.</a>
 
 # Publications
-<b>Evaluation of Hap, AngleSharp and HtmlDocument in web content extraction.</b> Uzun, E.; Buluş, H., N.; Doruk, A.; and Özhan, E. In International Scientific Conference’2017 (UNITECH’17), volume 2, pages 275-278, 2017. 
+<b>Object-based flowchart drawing library.</b> Uzun, E.; and Buluş, H., N. In 2017 International Conference on Computer Science and Engineering (UBMK), pages 110-115, 2017. 
 
 <a href="https://www.e-adys.com/yayinlar/" target="_blank">Click for bibtex, downloads, all publications...</a>
 
