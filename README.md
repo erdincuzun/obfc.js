@@ -2,13 +2,13 @@
 Object Based Flow Charts(obfc): Draws SVG-based flow charts by creating objects in your web pages.
 obfc.js is an object-based JavaScript Library for drawing SVG flow charts acroos modern web browsers. It makes easily to construct objects, links and connections. Moreover, it dispatches a click event when an object or a line is clicked and descriptions can be added for all clicks.
 # More documents about obfc.js
-* <a href="https://www.e-adys.com/obfc-js/object-based-flow-charts-obfc-js/" target="_blank">All Posts</a>
-* <a href="https://www.e-adys.com/obfc-js/obfc-js-example" target="_blank">An Example</a>
-* <a href="https://www.e-adys.com/obfc-js/properties-of-a-svg-shape" target="_blank">Properties of a SVG shape</a>
-* <a href="https://www.e-adys.com/obfc-js/obfc-js-all-svg-shapes" target="_blank">All SVG Shapes</a>
-* <a href="https://www.e-adys.com/obfc-js/obfc-js-creating-lines/" target="_blank">Creating Lines</a>
-* <a href="https://www.e-adys.com/obfc-js/obfc-js-collision-detection-editmode-and-console-log" target="_blank">Collision Detection, Editmode and Console.log</a>
-* <a href="https://www.e-adys.com/obfc-js/obfc-js-free-draw-and-free-write-functions" target="_blank"><em>free_draw</em> and <em>free_write</em> functions</a>
+* <a href="https://erdincuzun.com/obfc-js/object-based-flow-charts-obfc-js/" target="_blank">All Posts</a>
+* <a href="https://erdincuzun.com/obfc-js/obfc-js-example" target="_blank">An Example</a>
+* <a href="https://erdincuzun.com/obfc-js/properties-of-a-svg-shape" target="_blank">Properties of a SVG shape</a>
+* <a href="https://erdincuzun.com/obfc-js/obfc-js-all-svg-shapes" target="_blank">All SVG Shapes</a>
+* <a href="https://erdincuzun.com/obfc-js/obfc-js-creating-lines/" target="_blank">Creating Lines</a>
+* <a href="https://erdincuzun.com/obfc-js/obfc-js-collision-detection-editmode-and-console-log" target="_blank">Collision Detection, Editmode and Console.log</a>
+* <a href="https://erdincuzun.com/obfc-js/obfc-js-free-draw-and-free-write-functions" target="_blank"><em>free_draw</em> and <em>free_write</em> functions</a>
 
 # SVG Shapes
 obfc.js has 24 different SVG shapes that can be divided into four groups:  
